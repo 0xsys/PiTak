@@ -2,8 +2,8 @@ from scapy.all import *
 
 class sniffer:
     
-    # Berkeley Packet Filter, Packet Count till stop
-    def __init__(self, bpf, pktNum):
+    # Berkeley Packet Filter, Packet Count till stop (defaults to 0 if not specified otherwise)
+    def __init__(self, bpf, pktNum = 0):
         self.filter = bpf
         self.numberOfPackets = pktNum
 
@@ -16,3 +16,4 @@ class sniffer:
     def sniffToFile(self):
         packets = sniff(filter = self.filter, count = self.numberOfPackets)
         wrpcap("sPiffer.pcap", packets)
+ 
