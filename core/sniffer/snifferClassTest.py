@@ -1,4 +1,4 @@
-from classes.add import sniffer
+from sniffer import sniffer
 
 # use berkley packet filter for init of sniffer
 
