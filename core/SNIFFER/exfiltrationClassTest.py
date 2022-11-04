@@ -1,6 +1,6 @@
-from exfiltration import exfiltration
+from exfiltration import pcapExfiltration
 
 # Requires the .pcap file to be present otherwise will fail
 # Run "sudo python3 snifferClassTest.py" and uncomment the .sniffToFile() line
-a = exfiltration("../../PiTak.pcap")
+a = pcapExfiltration("../../PiTak.pcap")
 a.upload()

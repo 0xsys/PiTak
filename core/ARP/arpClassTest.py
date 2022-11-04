@@ -1,4 +1,4 @@
-from ARP import arpPoison
+from arp import arpPoison
 
 # Need a seperate machine to test this attack on.
 # Alter IP addresses to meet your own.

