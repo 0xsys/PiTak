@@ -7,8 +7,18 @@ from core.DOS.dos import DoS
 from core.SNIFFER.exfiltration import pcapExfiltration
 from core.ICMP.icmp import redirect
 
+usageMessage = """
+-at    | Attack type (str) : arp | icmp | sniffer_terminal | sniffer_file | syn | redirect
+-g     | Default gateway (str) 
+-t     | Target IP address (str)
+-tL    | List of target IP addresses (str)
+-bpf   | Berkeley Packet Filter variable (str)
+-c     | Count of packets for the Sniffer (int)
+-exfil | Exfiltration flag set for Dropbox (boolean)
+"""
+
 def main():
-    parser = argparse.ArgumentParser(description = "A small framework for testing a network's security of layer 2 technologies.", usage = "Hello world!")
+    parser = argparse.ArgumentParser(description = "A small framework for testing a network's security of layer 2 technologies.", usage = usageMessage)
     parser.add_argument("-at", help = "Attack type: str (ARP|arp sniffert|SNIFFERT)", type = str, dest = "attackType",action = "store", required = True)
     parser.add_argument("-g", help = "Default Gateway variable, necessary for some attacks (str)", type = str, dest = "gateway", action = "store")
     parser.add_argument("-t", help = "Target IP Address variable (str)", type = str, dest = "targetIP", action = "store")
