@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-#from core.DHCP.dhcp import dhcpAttacks
-#from core.ICMP.icmpRedirect import redirect
 
 import argparse
 from core.ARP.arp import arpPoison
 from core.SNIFFER.sniffer import sniffer
 from core.DOS.dos import DoS
 from core.SNIFFER.exfiltration import pcapExfiltration
+from core.ICMP.icmp import redirect
 
 def main():
     parser = argparse.ArgumentParser(description = "A small framework for testing a network's security of layer 2 technologies.", usage = "Hello world!")
@@ -67,11 +66,30 @@ def main():
             exfiltration.upload()
 
     if args.attackType == "syn" or args.attackType == "SYN":
+        if args.targetIP == None:
+            print("No target IP has been included, please use the -t flag.")
+            exit()
         denial = DoS(args.targetIP)
         denial.synFlood()
 
     if args.attackType == "icmp" or args.attackType == "ICMP":
+        if args.targetIP == None:
+            print("No target IP has been included, please use the -t flag.")
+            exit()
         denial = DoS(args.targetIP)
         denial.icmpFlood()
 
-main()
+    if args.attackType == "redirect" or args.attackType == "REDIRECT":
+        if args.targetIP == None or args.gateway == None:
+            print("The target IP or gateway has been not been included. Please include them with the -t or -g flags.")
+            exit()           
+        redirectionAttack = redirect(args.targetIP, args.gateway)
+        redirectionAttack.setup()
+        redirectionAttack.sendPacket()
+
+if __name__ == "__main__":
+    try:
+        main()
+
+    except KeyboardInterrupt:
+        print("CTRL+C has been pressed, exiting now!")
